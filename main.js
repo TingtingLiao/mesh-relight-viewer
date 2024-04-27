@@ -36,12 +36,13 @@ var createScene = function () {
         render(scene, pbrMaterial);
     })
  
-    // var current_mesh = scene.meshes[0].clone("clonedMesh");
+ 
     var filesInput = new BABYLON.FilesInput(engine, null, scene, null, null, null, function () {
         BABYLON.Tools.ClearLogCache()
     }, null, null);
     filesInput.onProcessFileCallback = (function(file, name, extension)
     {
+        var pbrMaterial = create_default_material(scene);
         if (extension.toLowerCase() === "obj"){ 
             // scene.meshes.forEach(mesh => {
             //     mesh.dispose();
@@ -66,22 +67,22 @@ var createScene = function () {
             reader.readAsDataURL(file);
     
         }else if (extension === "zip") { 
-            var zip = new JSZip();
-            zip.loadAsync(file).then(function (zipFile) {
-                if (zipFile.file("model.obj")) {
-                    // Extract the OBJ file and load it as a mesh
-                    zipFile.file("model.obj").async("string").then(function(objBlob) {
-                        // var objURL = URL.createObjectURL(objBlob);
-                        // BABYLON.SceneLoader.AppendAsync("", objURL);
-                        BABYLON.SceneLoader.ImportMesh("", "", "data:" + objBlob, scene, function (meshes) {
+            // todo 
+            // var zip = new JSZip();
+            // zip.loadAsync(file).then(function (zipFile) {
+            //     if (zipFile.file("model.obj")) {
+            //         // Extract the OBJ file and load it as a mesh
+            //         zipFile.file("model.obj").async("string").then(function(objBlob) {
+            //             // var objURL = URL.createObjectURL(objBlob);
+            //             // BABYLON.SceneLoader.AppendAsync("", objURL);
+            //             BABYLON.SceneLoader.ImportMesh("", "", "data:" + objBlob, scene, function (meshes) {
 
-                        });
-                    });
-                } else {
-                    console.log("ZIP file does not contain 'model.obj'.");
-                }
-
-            }); 
+            //             });
+            //         });
+            //     } else {
+            //         console.log("ZIP file does not contain 'model.obj'.");
+            //     } 
+            // }); 
         } else {
             console.log("Unsupported file type: " + extension);
         }
