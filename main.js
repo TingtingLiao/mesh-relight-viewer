@@ -13,26 +13,27 @@ baseHdriFolder = "./hdris/"
 
 
 function create_default_material(scene){
-    var pbrMaterial = new BABYLON.PBRMetallicRoughnessMaterial("pbr", scene);
-    pbrMaterial.baseTexture = new BABYLON.Texture(baseModelFolder + "texture_kd.png", scene);
-    pbrMaterial.metallicRoughnessTexture = new BABYLON.Texture(baseModelFolder + "texture_ks.png", scene);
+    var pbrMaterial = new BABYLON.PBRMetallicRoughnessMaterial("pbr", scene); 
     pbrMaterial.diffuseColor = new BABYLON.Color3(1.0, 1.0, 1.0);
     pbrMaterial.specularColor = new BABYLON.Color3(1.0, 1.0, 1.0);
-    pbrMaterial.roughness = 0.5;
-    pbrMaterial.metallic = 1.;
+    pbrMaterial.roughness = 0;
+    pbrMaterial.metallic = 0.;
     return pbrMaterial
 }
 
 var createScene = function () {
     var scene = new BABYLON.Scene(engine);
 
-    var pbrMaterial = create_default_material(scene);
+    
 
     // BABYLON.MeshBuilder.CreateSphere("sphere",  {}, scene, function(sphere){ 
         // render(scene, pbrMaterial); 
     // });
     
     BABYLON.SceneLoader.ImportMesh("", "./model/", "model.obj", scene, function (meshes) { 
+        var pbrMaterial = create_default_material(scene);
+        pbrMaterial.baseTexture = new BABYLON.Texture(baseModelFolder + "texture_kd.png", scene);
+        pbrMaterial.metallicRoughnessTexture = new BABYLON.Texture(baseModelFolder + "texture_ks.png", scene);
         render(scene, pbrMaterial);
     })
  
@@ -42,7 +43,7 @@ var createScene = function () {
     }, null, null);
     filesInput.onProcessFileCallback = (function(file, name, extension)
     {
-        var pbrMaterial = create_default_material(scene);
+        pbrMaterial = create_default_material(scene);
         if (extension.toLowerCase() === "obj"){ 
             // scene.meshes.forEach(mesh => {
             //     mesh.dispose();
@@ -58,8 +59,7 @@ var createScene = function () {
         }else if (extension === "png") {
             // scene.meshes.push(current_mesh);
             var reader = new FileReader();
-            reader.onload = function(e) { 
-                // var pbrMaterial = create_default_material(scene);
+            reader.onload = function(e) {  
                 pbrMaterial.baseTexture = new BABYLON.Texture(e.target.result, scene);
                 
                 render(scene, pbrMaterial);
