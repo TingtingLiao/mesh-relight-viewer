@@ -17,6 +17,14 @@
             width: 100%;
             height: 100%;
             display: block;
+        } 
+        #instructions {
+            position: absolute;
+            top: 10px;
+            left: 13px;
+            padding: 10px;
+            background-color: rgba(255, 255, 255, 0.7);
+            border-radius: 10px;
         }
     </style>
 
@@ -26,8 +34,26 @@
 
 </head>
 <body>
-<!--    <input type="file" id="fileInput" accept="image/*">-->
+
     <canvas id="renderCanvas"></canvas>
+    <div id="instructions">
+        <p><strong>Drag and Drop Files:</strong></p>
+        <ul>
+            <li>drop an obj file </li>
+            <li>drop an obj file and a texture image together</li> 
+            <li>do not support dropping only image file</li> 
+        </ul> 
+        <p><strong>Enviornment Map:</strong></p>
+        <ul>
+            <li>click on the enviornment map.</li>
+        </ul> 
+        <!-- <p><strong>Roughness Control:</strong></p>
+        <ul>
+            <li>Roughness bar: the value increase from left to right</li>
+            <li>Roughness bar: the value increase from left to right</li>
+        </ul>  -->
+    
+    </div>
     <script src="main.js"></script>
 
 </body>

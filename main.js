@@ -24,8 +24,6 @@ function create_default_material(scene){
 var createScene = function () {
     var scene = new BABYLON.Scene(engine);
 
-    
-
     // BABYLON.MeshBuilder.CreateSphere("sphere",  {}, scene, function(sphere){ 
         // render(scene, pbrMaterial); 
     // });
@@ -33,7 +31,7 @@ var createScene = function () {
     BABYLON.SceneLoader.ImportMesh("", "./model/", "model.obj", scene, function (meshes) { 
         var pbrMaterial = create_default_material(scene);
         pbrMaterial.baseTexture = new BABYLON.Texture(baseModelFolder + "texture_kd.png", scene);
-        pbrMaterial.metallicRoughnessTexture = new BABYLON.Texture(baseModelFolder + "texture_ks.png", scene);
+        // pbrMaterial.metallicRoughnessTexture = new BABYLON.Texture(baseModelFolder + "texture_ks.png", scene);
         render(scene, pbrMaterial);
     })
  
@@ -56,7 +54,7 @@ var createScene = function () {
                 // var pbrMaterial = create_default_material(scene); 
                 render(scene, pbrMaterial); 
             });
-        }else if (extension === "png") {
+        }else if (extension === "png" || extension === "jpg") {
             // scene.meshes.push(current_mesh);
             var reader = new FileReader();
             reader.onload = function(e) {  
@@ -110,7 +108,7 @@ function render(scene, pbrMaterial){
     camera.lowerRadiusLimitSearch = 0.05;
 
     if (!should_rotate) {
-        camera.attachControl(canvas, true);
+        camera.attachControl(canvas, true);pbrMaterial.metallic
     } else {
         camera.useAutoRotationBehavior = true;
         camera.autoRotationBehavior.idleRotationSpeed = -.5;
@@ -168,26 +166,27 @@ function render(scene, pbrMaterial){
         }
 
         uiTexture.addControl(grid);
-
-        createButton(grid, "forest_slope", 0);
-        createButton(grid, "lebombo", 1);
+        
+        createButton(grid, "lebombo", 0);
+        createButton(grid, "forest_slope", 1); 
         createButton(grid, "photo_studio", 2);
         createButton(grid, "urban_alley", 3);
 
         // Create a stack panel for UI controls
         var _panel = new BABYLON.GUI.StackPanel();
-        _panel.width = "220px";
-        _panel.horizontalAlignment = BABYLON.GUI.Control.HORIZONTAL_ALIGNMENT_LEFT;
-        _panel.verticalAlignment = BABYLON.GUI.Control.VERTICAL_ALIGNMENT_TOP;
+        _panel.width = "350px";
+        _panel.height = "1100px";
+        _panel.horizontalAlignment = BABYLON.GUI.Control.HORIZONTAL_ALIGNMENT_RIGHT;
+        _panel.verticalAlignment = BABYLON.GUI.Control.VERTICAL_ALIGNMENT_CENTER;
         uiTexture.addControl(_panel);
-
+  
         // Roughness slider
         var roughnessSlider = new BABYLON.GUI.Slider();
         roughnessSlider.minimum = 0.0;
         roughnessSlider.maximum = 1.0;
         roughnessSlider.value = pbrMaterial.roughness;
-        roughnessSlider.width = "200px";
-        roughnessSlider.height = "20px";
+        roughnessSlider.width = "300px";
+        roughnessSlider.height = "22px";
         roughnessSlider.onValueChangedObservable.add(function (value) {
             pbrMaterial.roughness = value;
             mesh.material = pbrMaterial;
@@ -200,6 +199,26 @@ function render(scene, pbrMaterial){
         roughnessLabel.height = "20px";
         roughnessLabel.color = "white";
         _panel.addControl(roughnessLabel);
+        
+        // Metallic slider
+        var metallicSlider = new BABYLON.GUI.Slider();
+        metallicSlider.minimum = 0.0;
+        metallicSlider.maximum = 1.0;
+        metallicSlider.value = pbrMaterial.metallic;
+        metallicSlider.width = "300px";
+        metallicSlider.height = "22px";
+        metallicSlider.onValueChangedObservable.add(function (value) {
+            pbrMaterial.metallic = value;
+            mesh.material = pbrMaterial;
+        });
+        _panel.addControl(metallicSlider);
+
+        // Metallic label
+        var metallicLabel = new BABYLON.GUI.TextBlock();
+        metallicLabel.text = "Metallic";
+        metallicLabel.height = "20px";
+        metallicLabel.color = "white";
+        _panel.addControl(metallicLabel);       
 
     }
 
