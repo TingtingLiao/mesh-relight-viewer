@@ -7,3 +7,4 @@ illum 1
 Ns 0 
 map_Kd texture_kd.png 
 map_Ks texture_ks.png 
+bump texture_kn.png 
